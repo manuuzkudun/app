@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 const utils = require("./utils");
+//const sandbox = require("./sandbox");
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const child_process = require('child_process');
+const fs = require('fs');
 
 const port = process.env.PORT || 8080;
 
@@ -20,12 +23,18 @@ app.post('/compile', function(req, res) {
   const langId = req.body.langId;
   const code = req.body.code;
   const stdIn = req.body.stdIn;
-  res.json({
-    langId: langId,
-    code: code,
-    stdIn: stdIn,
-    output: code,
-    errors: "Code errors"
+
+  fs.writeFile("./test_ruby.rb", code, function(err) {
+      if (err) return console.log(err);
+      child_process.exec("ruby test_ruby.rb", function(error, stdout, stderr) {
+        res.json({
+          langId: langId,
+          code: code,
+          stdIn: stdIn,
+          output: stdout,
+          errors: stderr
+        });
+      });
   });
 });
 
