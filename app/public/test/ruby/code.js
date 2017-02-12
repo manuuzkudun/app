@@ -1,3 +1,4 @@
+const code = `
 class SimpleNumber
 
   def initialize(num)
@@ -13,3 +14,4 @@ class SimpleNumber
     @x * y
   end
 end
+`;

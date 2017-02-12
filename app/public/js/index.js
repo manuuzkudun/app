@@ -1,5 +1,4 @@
 $( document ).ready(function() {
-
   var langSelect = $('#sel-language')[0];
 
   // Hide code output panel
@@ -31,7 +30,8 @@ $( document ).ready(function() {
     json = {
       langId: langId,
       code: $('#code').val(),
-      stdIn: ""
+      stdIn: "",
+      test: test_ruby
     };
     $.post("/compile", json, function(data, error, xhr) {
         //console.log(data);
