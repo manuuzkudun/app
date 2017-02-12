@@ -1,13 +1,14 @@
 const fs = require('fs');
-const child_process = require('child_process');
+const exec = require('child_process').exec;
 
 
 module.exports = {
-  compile: function() {
-    child_process.exec("ruby test_ruby.rb", function(error, stdout, stderr) {
-      console.log('stdout: ' + stdout);
-      console.log('stderr: ' + stderr);
-      return { stdOut: stdout, stdErr: stderr }
+  compile: function(code, success) {
+    fs.writeFile("./test_ruby.rb", code, function(err) {
+      if (err) return console.log(err);
+      exec("ruby test_ruby.rb", function(error, stdout, stderr) {
+        success(stdout, stderr);
+      });
     });
   }
 }

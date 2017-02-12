@@ -1,2 +1,2 @@
-4.times { puts "manu!!!" }
-puts txomin
+4.times { puts "I´m awesome!!" }
+puts "manu!!"
