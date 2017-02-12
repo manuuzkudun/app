@@ -3,28 +3,33 @@ const app = express();
 const utils = require("./utils");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const router = express.Router();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 // this will let us get the data from a POST
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
-router.post('/compile', function(req, res) {
+app.get('/', function(req, res){
+  res.sendfile("./index.html");
+});
+
+app.post('/compile', function(req, res) {
   const langId = req.body.langId;
   const code = req.body.code;
-  const stdin = req.body.stdin;
+  const stdIn = req.body.stdIn;
   res.json({
     langId: langId,
     code: code,
-    stdIn: stdIn
+    stdIn: stdIn,
+    output: code,
+    errors: "Code errors"
   });
 });
 
-app.use('/api', router);
 
 app.listen(port, function () {
-  console.log('App listening on port 3000!')
+  console.log('App listening on port ' +  port)
 });
