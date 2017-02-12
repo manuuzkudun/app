@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Compile box demo</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <link href="style.css" rel="stylesheet">
+    <script src="langs.js"></script>
+  </head>
+
+  <body>
+
+   <header id="main-header">
+      <h1 class="logo text-center">CompileBox Demo</h1>
+   </header>
+    <div class="wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8">
+            <h2 class="editor-label text-center">Your code</h2>
+            <div class="panel panel-default">
+              <textarea class="form-control code-editor CodeMirror-gutters" rows="20" id="code"></textarea>
+            </div>
+            <!-- Language selector -->
+            <div class="row">
+              <div class="col-xs-8 col-xs-offset-2">
+                <form class="form-inline">
+                  <div class="form-group">
+                    <label for="sel-language">Select a language</label>
+                    <select class="form-control horizontal-margin" id="sel-language">
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-success horizontal-margin" id="send" >Run code</button>
+                </form>
+              </div>
+            </div>
+            <!-- End language selector -->
+            <!-- -->
+            <div style="margin-top: 50px; padding: 40px;" class="panel panel-default" id="output"></div>
+          </div>
+          <!-- <div class="col-xs-12 col-sm-4">
+            <h2 class="editor-label text-center">Compilation result</h2>
+            <div class="panel panel-default">
+              <textarea class="form-control code-result" rows="20" id="output"></textarea>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="lib/codemirror.js"></script>
+    <script src="lib/ruby.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
