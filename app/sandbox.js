@@ -8,6 +8,7 @@ module.exports.compile = function (code, test, success) {
       if (err) return console.log(err);
       exec("ruby ./temp/test.rb", function(error, stdout, stderr) {
         success(stdout, stderr);
+        console.log(stdout);
       });
     });
   });

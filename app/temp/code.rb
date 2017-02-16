@@ -9,7 +9,7 @@ class SimpleNumber
     @x + y
   end
 
-  def multiply(y)
+  def multiply(y
     @x * y
   end
 end
