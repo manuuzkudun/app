@@ -7,7 +7,7 @@ module.exports.compile = function (code, test, success) {
     if (err) return console.log(err);
     fs.writeFile("./temp/test.rb", test, function(err) {
       if (err) return console.log(err);
-      exec("ruby ./temp/test.rb", function(error, stdout, stderr) {
+      exec("ruby ./temp/code.rb", function(error, stdout, stderr) {
         success(parser.parseStdOut(stdout), parser.parseStdError(stderr));
         console.log(stdout);
       });
