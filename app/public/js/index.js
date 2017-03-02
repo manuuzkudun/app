@@ -34,7 +34,7 @@ $( document ).ready(function() {
       test: test_ruby
     };
     $.post("/compile", json, function(data, error, xhr) {
-        //console.log(data);
+        console.log(data);
         $("#output img").remove();
         document.getElementById("output").innerHTML = "<h3>Output</h3><p>" + data.output
         + "</p>" + "<h3>Errors</h3><p>" + data.errors + "</p>"
