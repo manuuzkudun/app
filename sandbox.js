@@ -87,6 +87,7 @@ DockerSandbox.prototype.execute = function(success) {
           var lines = data.toString().split('*-COMPILEBOX::ENDOFOUTPUT-*');
           data = lines[0];
           var time=lines[1];
+          console.log('dataaaa' + data);
           success(data,time,data2)
         });
       } else { //if time is up. Save an error message to the data variable

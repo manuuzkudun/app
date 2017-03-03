@@ -3,20 +3,22 @@ function checkTestSuccess(string) {
     return outputValue && testValue === '.'
   }, true);
 }
-
 function cleanTerminalLines(stdout) {
   return stdout.split("\n").filter(function(line) {
     return line.length > 0
   });
 }
-
 function getTestFailures(lines) {
   var testFailures = [];
   lines.forEach(function(line, index) {
     if ( line.match(/Failure/) ) {
-      var expected = lines[index +2].replace(/ /g,'');
-      var actual = lines[index +3].replace(/ /g,'');
+      var testId = lines[index +1].split(' ')[0].split('#')[1].split('_').join('-');
+      var testName = capitalizeFirstLetter(lines[index +1].split(' ')[0].split('#')[1].split('_').join(' '));
+      var expected = lines[index +2].replace(/ /g,'').replace('Expected:', '');
+      var actual = lines[index +3].replace(/ /g,'').replace('Actual:', '');
       testFailures.push({
+        testName: testName,
+        testId: testId,
         expected: expected,
         actual: actual
       });
@@ -24,8 +26,6 @@ function getTestFailures(lines) {
   });
   return testFailures;
 }
-
-
 module.exports = {
   parseStdOut: function(stdout) {
     if (stdout === '')
@@ -40,4 +40,6 @@ module.exports = {
     return stderror === '' ? null : 'Error';
   }
 }
-
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
