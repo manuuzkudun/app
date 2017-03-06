@@ -12,10 +12,11 @@ function getTestFailures(lines) {
   var testFailures = [];
   lines.forEach(function(line, index) {
     if ( line.match(/Failure/) ) {
+      console.log(lines);
       var testId = lines[index +1].split(' ')[0].split('#')[1].split('_').join('-');
       var testName = capitalizeFirstLetter(lines[index +1].split(' ')[0].split('#')[1].split('_').join(' '));
-      var expected = lines[index +2].replace(/ /g,'').replace('Expected:', '');
-      var actual = lines[index +3].replace(/ /g,'').replace('Actual:', '');
+      var expected = lines[index +2].replace(/ /g,'').replace(/[+-]/, '');
+      var actual = lines[index +3].replace(/ /g,'').replace(/[+-]/, '');
       testFailures.push({
         testName: testName,
         testId: testId,
@@ -26,6 +27,12 @@ function getTestFailures(lines) {
   });
   return testFailures;
 }
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
 module.exports = {
   parseStdOut: function(stdout) {
     if (stdout === '')
@@ -39,7 +46,4 @@ module.exports = {
   parseStdError: function (stderror) {
     return stderror === '' ? null : 'Error';
   }
-}
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }

@@ -24,21 +24,23 @@ app.get('/', function(req, res){
 });
 
 app.post('/compile', function(req, res) {
-  const langId = req.body.langId;
+
+  // res.json( {
+  //   output: "yeahhh!"
+  // })
+
+  const languageName = req.body.language;
   const code = req.body.code;
-  const stdIn = req.body.stdIn;
-  const testCode = req.body.test;
+  const stdIn = req.body.stdIn || '';
+  const testCode = req.body.test || null;
 
   const folder= 'temp/' + utils.randomString(10);
-  const path=__dirname+"/";
+  const path= __dirname + "/";
   const vmName='ruby'; //name of virtual machine that we want to execute
   const timeout=20;//Timeout Value, In Seconds
   const compiler = "ruby";
   const codeFilename = "code.rb";
   const testFilename = "test.rb";
-  const runCompiledCommand = "";
-  const languageName = "Ruby"
-  const additionalCompilerArgs = "";
 
   // Initialize Docker sandbox
   const dockerSandbox = new sandBox({
@@ -51,19 +53,16 @@ app.post('/compile', function(req, res) {
     testFilename: testFilename,
     code: code,
     testCode: testCode,
-    runCompiledCommand: runCompiledCommand,
     languageName: languageName,
-    additionalCompilerArgs: additionalCompilerArgs,
     stdIn: stdIn
   });
 
   //data will contain the output of the compiled/interpreted code
   //the result maybe normal program output, list of error messages or a Timeout error
   dockerSandbox.run(function(data,exec_time,err){
-    data = parser.parseStdOut(data);
-    console.log(data);
+    data = testCode ? parser.parseStdOut(data) : data;
     res.json({
-      langId: langId,
+      languageName: languageName,
       code: code,
       stdIn: stdIn,
       output: data,

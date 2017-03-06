@@ -11,9 +11,7 @@ const DockerSandbox = function(args) {
     this.code = args["code"];
     this.testFilename = args["testFilename"];
     this.testCode = args["testCode"];
-    this.output_command = args["runCompiledCommand"];
     this.langName = args["languageName"];
-    this.extra_arguments = args["additionalCompilerArgs"];
     this.stdin_data = args["stdIn"];
 }
 
@@ -34,21 +32,22 @@ DockerSandbox.prototype.prepare = function(success) {
   // Set up permissions to the folder
   command += "&& chmod 777 " + this.path+this.folder;
   exec(command,function(st){
+
     const codeFilename = sandbox.path + sandbox.folder + "/" + sandbox.codeFilename;
     fs.writeFile(codeFilename, sandbox.code);
     console.log(sandbox.langName + " file was saved!");
-
     exec("chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.codeFilename+"\'");
 
     const inputFilename = sandbox.path + sandbox.folder+"/inputFile";
     fs.writeFile(inputFilename, sandbox.stdin_data);
     console.log("Input file was saved!");
 
-    const testFilename = sandbox.path + sandbox.folder + "/" + sandbox.testFilename;
-    fs.writeFile(testFilename, sandbox.testCode);
-    console.log("Test file was saved!");
-    exec("chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.testFilename+"\'");
-
+    if (sandbox.testCode) {
+      const testFilename = sandbox.path + sandbox.folder + "/" + sandbox.testFilename;
+      fs.writeFile(testFilename, sandbox.testCode);
+      console.log("Test file was saved!");
+      exec("chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.testFilename+"\'");
+    }
     success();
   });
 }
@@ -60,10 +59,10 @@ DockerSandbox.prototype.execute = function(success) {
   command += this.path + this.folder;
   command += " usercode ";
   command += this.vm_name + ' ';
-  command += this.compiler_name;
-  // command += ' /usercode/script.sh ';
-
+  command += this.compiler_name + ' ';
+  command += sandbox.testCode ? sandbox.testFilename : sandbox.codeFilename;
   console.log(command);
+
   //execute the Docker, This is done ASYNCHRONOUSLY
   exec(command, function() {
     console.log("running docker");
@@ -87,7 +86,6 @@ DockerSandbox.prototype.execute = function(success) {
           var lines = data.toString().split('*-COMPILEBOX::ENDOFOUTPUT-*');
           data = lines[0];
           var time=lines[1];
-          console.log('dataaaa' + data);
           success(data,time,data2)
         });
       } else { //if time is up. Save an error message to the data variable
@@ -109,7 +107,7 @@ DockerSandbox.prototype.execute = function(success) {
       // now remove the temporary directory
       console.log("ATTEMPTING TO REMOVE: " + sandbox.folder);
       console.log("------------------------------");
-      exec("rm -r " + sandbox.folder);
+      //exec("rm -r " + sandbox.folder);
       clearInterval(intid);
     });
   }, 1000);
