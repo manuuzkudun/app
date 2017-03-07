@@ -25,10 +25,6 @@ app.get('/', function(req, res){
 
 app.post('/compile', function(req, res) {
 
-  // res.json( {
-  //   output: "yeahhh!"
-  // })
-
   const languageName = req.body.language;
   const code = req.body.code;
   const stdIn = req.body.stdIn || '';

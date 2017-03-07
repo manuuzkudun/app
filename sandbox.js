@@ -26,7 +26,7 @@ DockerSandbox.prototype.run = function(success) {
 DockerSandbox.prototype.prepare = function(success) {
   const sandbox = this;
   // Create a folder to mount the docker container
-  var command = "mkdir " + this.path + this.folder;
+  var command = "sudo mkdir " + this.path + this.folder;
   // copy the content of the payload folder to the folder to be mounted
   command += " && cp " + this.path + "/Payload/* " + this.path + this.folder;
   // Set up permissions to the folder
@@ -36,7 +36,7 @@ DockerSandbox.prototype.prepare = function(success) {
     const codeFilename = sandbox.path + sandbox.folder + "/" + sandbox.codeFilename;
     fs.writeFile(codeFilename, sandbox.code);
     console.log(sandbox.langName + " file was saved!");
-    exec("chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.codeFilename+"\'");
+    exec("sudo chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.codeFilename+"\'");
 
     const inputFilename = sandbox.path + sandbox.folder+"/inputFile";
     fs.writeFile(inputFilename, sandbox.stdin_data);
@@ -46,7 +46,7 @@ DockerSandbox.prototype.prepare = function(success) {
       const testFilename = sandbox.path + sandbox.folder + "/" + sandbox.testFilename;
       fs.writeFile(testFilename, sandbox.testCode);
       console.log("Test file was saved!");
-      exec("chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.testFilename+"\'");
+      exec("sudo chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.testFilename+"\'");
     }
     success();
   });
