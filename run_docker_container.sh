@@ -4,5 +4,5 @@ docker_container=$3
 compiler=$4
 file_to_run=$5
 
-docker run -v $host_dir':/'$container_dir \
+sudo docker run -v $host_dir':/'$container_dir \
   $docker_container bash -c "usercode/script.sh '$compiler' '$file_to_run' && echo ok">debug
