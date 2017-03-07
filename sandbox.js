@@ -28,9 +28,9 @@ DockerSandbox.prototype.prepare = function(success) {
   // Create a folder to mount the docker container
   var command = "sudo mkdir " + this.path + this.folder;
   // copy the content of the payload folder to the folder to be mounted
-  command += " && cp " + this.path + "/Payload/* " + this.path + this.folder;
+  command += " && sudo cp " + this.path + "/Payload/* " + this.path + this.folder;
   // Set up permissions to the folder
-  command += "&& chmod 777 " + this.path+this.folder;
+  command += "&& sudo chmod 777 " + this.path+this.folder;
   exec(command,function(st){
 
     const codeFilename = sandbox.path + sandbox.folder + "/" + sandbox.codeFilename;
@@ -55,7 +55,7 @@ DockerSandbox.prototype.prepare = function(success) {
 DockerSandbox.prototype.execute = function(success) {
   var myC = 0; //variable to enforce the timeout_value
   var sandbox = this;
-  var command = this.path +'run_docker_container.sh ';
+  var command = "sudo " + this.path +'run_docker_container.sh ';
   command += this.path + this.folder;
   command += " usercode ";
   command += this.vm_name + ' ';
