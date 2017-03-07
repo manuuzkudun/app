@@ -27,10 +27,15 @@ DockerSandbox.prototype.prepare = function(success) {
   const sandbox = this;
   // Create a folder to mount the docker container
   var command = "sudo mkdir " + this.path + this.folder;
+  console.log(command);
+  exec(command);
   // copy the content of the payload folder to the folder to be mounted
-  command += " && sudo cp " + this.path + "/payload/script.sh " + this.path + this.folder;
+  command = "sudo cp " + this.path + "/payload/script.sh " + this.path + this.folder;
+  console.log(command);
+  exec(command);
   // Set up permissions to the folder
-  command += "&& sudo chmod 777 " + this.path+this.folder;
+  command = "sudo chmod 777 " + this.path+this.folder;
+  console.log(command);
   exec(command,function(st){
 
     const codeFilename = sandbox.path + sandbox.folder + "/" + sandbox.codeFilename;
