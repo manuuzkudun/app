@@ -28,7 +28,7 @@ DockerSandbox.prototype.prepare = function(success) {
   // Create a folder to mount the docker container
   var command = "sudo mkdir " + this.path + this.folder;
   // copy the content of the payload folder to the folder to be mounted
-  command += " && sudo cp " + this.path + "/Payload/* " + this.path + this.folder;
+  command += " && sudo cp " + this.path + "/payload/script.sh " + this.path + this.folder;
   // Set up permissions to the folder
   command += "&& sudo chmod 777 " + this.path+this.folder;
   exec(command,function(st){
@@ -107,7 +107,7 @@ DockerSandbox.prototype.execute = function(success) {
       // now remove the temporary directory
       console.log("ATTEMPTING TO REMOVE: " + sandbox.folder);
       console.log("------------------------------");
-      //exec("rm -r " + sandbox.folder);
+      exec("sudo rm -r " + sandbox.folder);
       clearInterval(intid);
     });
   }, 1000);
