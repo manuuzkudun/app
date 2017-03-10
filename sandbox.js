@@ -26,22 +26,22 @@ DockerSandbox.prototype.run = function(success) {
 DockerSandbox.prototype.prepare = function(success) {
   const sandbox = this;
   // Create a folder to mount the docker container
-  var command = "mkdir " + this.path + this.folder;
+  var command = "sudo mkdir " + this.path + this.folder;
   console.log(command);
   exec(command);
   // copy the content of the payload folder to the folder to be mounted
-  command = "cp " + this.path + "/payload/script.sh " + this.path + this.folder;
+  command = "sudo cp " + this.path + "payload/script.sh " + this.path + this.folder;
   console.log(command);
   exec(command);
   // Set up permissions to the folder
-  command = "chmod 777 " + this.path+this.folder;
+  command = "sudo chmod 777 " + this.path+this.folder;
   console.log(command);
   exec(command,function(st){
 
     const codeFilename = sandbox.path + sandbox.folder + "/" + sandbox.codeFilename;
     fs.writeFile(codeFilename, sandbox.code);
     console.log(sandbox.langName + " file was saved!");
-    exec("chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.codeFilename+"\'");
+    exec("sudo chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.codeFilename+"\'");
 
     const inputFilename = sandbox.path + sandbox.folder+"/inputFile";
     fs.writeFile(inputFilename, sandbox.stdin_data);
@@ -51,7 +51,7 @@ DockerSandbox.prototype.prepare = function(success) {
       const testFilename = sandbox.path + sandbox.folder + "/" + sandbox.testFilename;
       fs.writeFile(testFilename, sandbox.testCode);
       console.log("Test file was saved!");
-      exec("chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.testFilename+"\'");
+      exec("sudo chmod 777 \'"+sandbox.path+sandbox.folder+"/"+sandbox.testFilename+"\'");
     }
     success();
   });
@@ -60,7 +60,7 @@ DockerSandbox.prototype.prepare = function(success) {
 DockerSandbox.prototype.execute = function(success) {
   var myC = 0; //variable to enforce the timeout_value
   var sandbox = this;
-  var command = "" + this.path +'run_docker_container.sh ';
+  var command = "sudo " + this.path +'run_docker_container.sh ';
   command += this.path + this.folder;
   command += " usercode ";
   command += this.vm_name + ' ';
@@ -112,7 +112,7 @@ DockerSandbox.prototype.execute = function(success) {
       // now remove the temporary directory
       console.log("ATTEMPTING TO REMOVE: " + sandbox.folder);
       console.log("------------------------------");
-      //exec("rm -r " + sandbox.folder);
+      //exec("sudo rm -r " + sandbox.folder);
       clearInterval(intid);
     });
   }, 1000);
