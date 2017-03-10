@@ -1,11 +1,15 @@
 const express = require('express');
 const app = express();
+const compilers = require('./compilers');
+const extensions = require('./extensions');
 const utils = require("./utils");
 const sandBox = require("./sandbox");
 const bodyParser = require('body-parser');
 const parser = require('./parser');
 
 const port = process.env.PORT || 8080;
+
+
 
 // This will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,12 +36,11 @@ app.post('/compile', function(req, res) {
 
   const folder= 'temp/' + utils.randomString(10);
   const path= __dirname + "/";
-  const vmName='ruby'; //name of virtual machine that we want to execute
+  const vmName=  compilers[languageName.toLowerCase()]; //name of virtual machine that we want to execute
   const timeout=20;//Timeout Value, In Seconds
-  const compiler = "ruby";
-  const codeFilename = "code.rb";
-  const testFilename = "test.rb";
-
+  const compiler = compilers[languageName.toLowerCase()];
+  const codeFilename = "code." + extensions[languageName.toLowerCase()];
+  const testFilename = "test." + extensions[languageName.toLowerCase()];
   // Initialize Docker sandbox
   const dockerSandbox = new sandBox({
     timeout: timeout,
